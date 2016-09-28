@@ -36,8 +36,8 @@
     {% if list_slug == "mine" %}
         <h1>Задача назначена на {{ request.user }}</h1>
     {% elif auth_ok %}
-       <h1>Tasks filed under "{{ list.name }}"</h1>
-       <p>This list belongs to group {{ list.group }}</p>
+       <h1>Задачи в категории &laquo;{{ list.name }}&raquo;</h1>
+       <p>Эта категория относится к группе {{ list.group }}</p>
     {% endif %}
 
     {% if auth_ok %}
@@ -70,7 +70,7 @@
 
                     <input type="hidden" name="priority" value="999" id="id_priority">
                     <input type="hidden" name="created_by" value="{{ request.user.id }}" id="id_created_by">
-                    <input type="hidden" name="list" value="{{ list.id }}" id="id_list">
+                    <input type="hidden" name="list" value="{{ global_list_id }}" id="id_list">
                     <input type="hidden" name="created_date" value="{{ created_date }}" id="id_created_date">
             	    <p><input type="submit" name="add_task" value="Добавить задачу" class="todo-button"></p>
                 </div>
@@ -118,7 +118,7 @@
             	</table>
 
                 <p><input type="submit" name="mark_tasks_done" value="Применить..."  class="todo-button"></p>
-                <p><a class="todo" href="{% url 'todo-completed_tasks' list.id list_slug %}">Посмотреть выполненные задачи</a></p>
+                <p><a class="todo" href="{% if %}{% url 'todo-completed_tasks' global_list_id list_slug %}">Посмотреть выполненные задачи</a></p>
 
             {% else %}
 
@@ -153,12 +153,12 @@
             	</table>
             	<p><input type="submit" name="deldonetasks" value="Применить"  class="todo-button"></p>
             	</form>
-                <p><a class="todo" href="{% url 'todo-incomplete_tasks' list.id list_slug %}">Посмотреть невыполненные задачи</a></p>
+                <p><a class="todo" href="{% url 'todo-incomplete_tasks' global_list_id list_slug %}">Посмотреть невыполненные задачи</a></p>
             {% endif %}
 
     	{% if user.is_staff %}
         	{% if list_slug != "mine" %}
-        	   <p><a class="todo" href="{% url 'todo-del_list' list.id list_slug %}">Удалить категорию</a></p>
+        	   <p><a class="todo" href="{% url 'todo-del_list' global_list_id list_slug %}">Удалить категорию</a></p>
         	{% endif %}
     	{% endif %}
 

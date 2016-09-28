@@ -87,6 +87,7 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
 
     # Make sure the accessing user has permission to view this list.
     # Always authorize the "mine" view. Admins can view/edit all lists.
+    list = None
     if list_slug == "mine" or list_slug == "recent-add" or list_slug == "recent-complete":
         auth_ok = True
     else:
@@ -148,6 +149,8 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
                 'assigned_to': request.user.id,
                 'priority': 999,
             })
+
+    global_list_id = 0 if list is None else list.id
 
     return render(request, 'todo/view_list.html', locals())
 
