@@ -9,7 +9,10 @@
 	    // thedate.x comes from the edit_task view. If this is a new entry,
 	    // thedate won't be present and datepicker will fall back on the default (today).
 	    $(document).ready(function(){
-	        $('#id_due_date').datepicker({defaultDate: new Date({{thedate.year}}, {{thedate.month}} - 1, {{thedate.day}}),});
-	     });
+	        $('#id_due_date').datepicker({
+				language: "ru",
+				defaultDate: new Date({{thedate.year}}, {{thedate.month}} - 1, {{thedate.day}}),
+		    });
+	    });
 	</script>
 {% endblock extrahead %}
