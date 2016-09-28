@@ -34,7 +34,7 @@
     </script>
 
     {% if list_slug == "mine" %}
-        <h1>Задача назначена на {{ request.user }}</h1>
+        <h1>Задачи, назначенные на {{ request.user.get_full_name }}</h1>
     {% elif auth_ok %}
        <h1>Задачи в категории &laquo;{{ list.name }}&raquo;</h1>
        <p>Эта категория относится к группе {{ list.group }}</p>

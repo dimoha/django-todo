@@ -53,7 +53,7 @@
 
                     <tr>
                         <td>Дедлайн:</td>
-                        <td>{{ form.due_date }}  </td>
+                        <td>{% if form.due_date %}{{ form.due_date }}{% else %}-{% endif %}</td>
                     </tr>
 
                     <tr>
@@ -79,7 +79,7 @@
 
             <h3>Добавить комментарий</h3>
             <textarea name="comment-body"></textarea>
-            <p><input class="todo-button" type="submit" value="Submit"></p>
+            <p><input class="todo-button" type="submit" value="Отправить"></p>
 
         </form>
 
