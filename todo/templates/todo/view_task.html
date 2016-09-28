@@ -29,7 +29,7 @@
                 <strong>Категория:</strong> <a href="{% url 'todo-incomplete_tasks' task.list.id task.list.slug %}" class="showlink">{{ task.list }}</a><br />
                 <strong>Исполнитель:</strong> {% if task.assigned_to %}{{ task.assigned_to.get_full_name }}{% else %}Anyone{% endif %}<br />
                 <strong>Автор:</strong> {{ task.created_by.first_name }} {{ task.created_by.last_name }}<br />
-                <strong>Дедлайн:</strong>  {{ task.due_date }}<br />
+                <strong>Дедлайн:</strong>  {% if task.due_date %}{{ task.due_date }}{% else %}-{% endif %}<br />
                 <strong>Закрыта:</strong> {{ form.completed }}<br />
             </p>
 
@@ -53,7 +53,7 @@
 
                     <tr>
                         <td>Дедлайн:</td>
-                        <td>{% if form.due_date %}{{ form.due_date }}{% else %}-{% endif %}</td>
+                        <td>{% if form.due_date %}{{ form.due_date }}{% else %}{% endif %}</td>
                     </tr>
 
                     <tr>
