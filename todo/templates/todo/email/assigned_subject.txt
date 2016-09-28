@@ -1,1 +1,1 @@
-GTD: New task - {% autoescape off %}Note: {{ task.title }}{% endautoescape %}
+Новая задача - {% autoescape off %}{{ task.title }}{% endautoescape %}

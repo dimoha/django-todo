@@ -1,16 +1,16 @@
 {% extends "todo/base.html" %}
 
 {% block page_heading %}{% endblock %}
-{% block title %}Add Todo List{% endblock %}
+{% block title %}Добавление категории задач{% endblock %}
 
 {% block content %}
 
-	<h2>Add a list:</h2>
+	<h2>Добавить категорию задач:</h2>
 
 	<form action="" method="post">
 		{% csrf_token %}
 	<table>{{ form }}</table>
-	<p><input type="submit" value="Submit" class="todo-button"></p>
+	<p><input type="submit" value="Создать" class="todo-button"></p>
 	</form>
 
 {% endblock %}

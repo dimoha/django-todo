@@ -1,16 +1,17 @@
-A new task comment has been added.
+Добавлен новый комментарий.
 
-Task: {{ task.title }}
-Commenter: {{ user.first_name }} {{ user.last_name }}
+Задача: {{ task.title }}
+Автор комментария: {{ user.get_full_name }}
 
-Comment:
+Комментарий:
 {% autoescape off %}
 {{ body }}
 {% endautoescape %}
 
-Task details/comments:
+
+Подробнее:
 https://{{ site }}{% url 'todo-task_detail' task.id %}
 
-List {{ task.list.name }}:
+Категория {{ task.list.name }}:
 https://{{ site }}{% url 'todo-incomplete_tasks' task.list.id task.list.slug %}
 

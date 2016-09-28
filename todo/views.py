@@ -1,5 +1,5 @@
+# -*- coding: utf-8 -*-
 import datetime
-
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -12,15 +12,13 @@ from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.sites.models import Site
+from django.conf import settings
 
 from todo import settings
 from todo.forms import AddListForm, AddItemForm, EditItemForm, AddExternalItemForm, SearchForm
 from todo.models import Item, List, Comment
 from todo.utils import mark_done, undo_completed_task, del_tasks, send_notify_mail
 
-# Need for links in email templates
-current_site = Site.objects.get_current()
 
 
 def check_user_allowed(user):
@@ -43,7 +41,8 @@ def list_lists(request):
 
     # Make sure user belongs to at least one group.
     if request.user.groups.all().count() == 0:
-        messages.error(request, "You do not yet belong to any groups. Ask your administrator to add you to one.")
+        messages.error(request, u"Вы не состоите ни в одной группе. "
+                                u"Попросите администратора определить Вас в какую-нибудь.")
 
     # Superusers see all lists
     if request.user.is_superuser:
@@ -96,7 +95,7 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
         if list.group in request.user.groups.all() or request.user.is_staff or list_slug == "mine":
             auth_ok = True
         else:  # User does not belong to the group this list is attached to
-            messages.error(request, "You do not have permission to view/edit this list.")
+            messages.error(request, u"У Вас нет прав на просмотр/редактирование этой категории.")
 
     # Process all possible list interactions on each submit
     mark_done(request, request.POST.getlist('mark_done'))
@@ -141,7 +140,7 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
             if "notify" in request.POST and new_task.assigned_to != request.user:
                 send_notify_mail(request, new_task)
 
-            messages.success(request, "New task \"{t}\" has been added.".format(t=new_task.title))
+            messages.success(request, u"Новая задача \"{t}\" добавлена.".format(t=new_task.title))
             return HttpResponseRedirect(request.path)
     else:
         # Don't allow adding new tasks on some views
@@ -188,7 +187,7 @@ def view_task(request, task_id):
                     email_subject = render_to_string("todo/email/assigned_subject.txt", {'task': task})
                     email_body = render_to_string(
                         "todo/email/newcomment_body.txt",
-                        {'task': task, 'body': request.POST['comment-body'], 'site': current_site, 'user': request.user}
+                        {'task': task, 'body': request.POST['comment-body'], 'site': settings.SITE_DOMAIN, 'user': request.user}
                     )
 
                     # Get list of all thread participants - task creator plus everyone who has commented on it.
@@ -201,11 +200,12 @@ def view_task(request, task_id):
 
                     try:
                         send_mail(email_subject, email_body, task.created_by.email, recip_list, fail_silently=False)
-                        messages.success(request, "Comment sent to thread participants.")
+                        messages.success(request, u"Коммментарий отправлен всем участникам задачи.")
                     except:
-                        messages.error(request, "Comment saved but mail not sent. Contact your administrator.")
+                        messages.error(request, u"Задача сохранена но письмо не отправлено. "
+                                                u"Свяжитесь с администратором.")
 
-                messages.success(request, "The task has been edited.")
+                messages.success(request, u"Задача успешно отредактирована.")
 
                 return HttpResponseRedirect(reverse('todo-incomplete_tasks', args=[task.list.id, task.list.slug]))
         else:
@@ -215,7 +215,7 @@ def view_task(request, task_id):
             else:
                 thedate = datetime.datetime.now()
     else:
-        messages.info(request, "You do not have permission to view/edit this task.")
+        messages.info(request, u"У Вас нет прав на просмотр/редактирование этой задачи.")
 
     return render(request, 'todo/view_task.html', locals())
 
@@ -261,14 +261,15 @@ def external_add(request):
             item.save()
 
             email_subject = render_to_string("todo/email/assigned_subject.txt", {'task': item.title})
-            email_body = render_to_string("todo/email/assigned_body.txt", {'task': item, 'site': current_site, })
+            email_body = render_to_string("todo/email/assigned_body.txt", {'task': item, 'site': settings.SITE_DOMAIN, })
             try:
                 send_mail(
                     email_subject, email_body, item.created_by.email, [item.assigned_to.email, ], fail_silently=False)
             except:
-                messages.error(request, "Task saved but mail not sent. Contact your administrator.")
+                messages.error(request, u"Задача сохранена но письмо не отправлено. "
+                                        u"Свяжитесь с администратором.")
 
-            messages.success(request, "Your trouble ticket has been submitted. We'll get back to you soon.")
+            messages.success(request, u"Запрос в техподдержку отправлен. Мы скоро вам ответим!.")
 
             return HttpResponseRedirect(settings.PUBLIC_SUBMIT_REDIRECT)
     else:
@@ -287,13 +288,13 @@ def add_list(request):
         if form.is_valid():
             try:
                 form.save()
-                messages.success(request, "A new list has been added.")
+                messages.success(request, u"Категория добавлена.")
                 return HttpResponseRedirect(request.path)
             except IntegrityError:
                 messages.error(
                     request,
-                    "There was a problem saving the new list. "
-                    "Most likely a list with the same name in the same group already exists.")
+                    u"Ошибка при добавлении категории."
+                    u"Скорее всего категория с таким названием в этой группе уже существует.")
     else:
         if request.user.groups.all().count() == 1:
             form = AddListForm(request.user, initial={"group": request.user.groups.all()[0]})

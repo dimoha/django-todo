@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import datetime
 
@@ -29,7 +30,8 @@ class List(models.Model):
 
     class Meta:
         ordering = ["name"]
-        verbose_name_plural = "Lists"
+        verbose_name_plural = u"Категории"
+        verbose_name = u"Категория"
 
         # Prevents (at the database level) creation of two lists with the same name in the same group
         unique_together = ("group", "slug")
@@ -54,7 +56,7 @@ class Item(models.Model):
         if self.due_date and datetime.date.today() > self.due_date:
             return 1
 
-    def __str__(self):
+    def __unicode__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -69,6 +71,8 @@ class Item(models.Model):
 
     class Meta:
         ordering = ["priority"]
+        verbose_name_plural = u"Задачи"
+        verbose_name = u"Задача"
 
 
 @python_2_unicode_compatible
@@ -86,5 +90,9 @@ class Comment(models.Model):
         # Define here rather than in __str__ so we can use it in the admin list_display
         return "{author} - {snippet}...".format(author=self.author, snippet=self.body[:35])
 
-    def __str__(self):
+    def __unicode__(self):
         return self.snippet
+
+    class Meta:
+        verbose_name_plural = u"Комментарии"
+        verbose_name = u"Комментарий"
