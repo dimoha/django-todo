@@ -7,7 +7,6 @@ from django.contrib.auth.models import User, Group
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.utils.encoding import python_2_unicode_compatible
-from todo.utils import translit
 
 
 @python_2_unicode_compatible
@@ -18,6 +17,7 @@ class List(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
+            from todo.utils import translit
             self.slug = slugify(translit(self.name), allow_unicode=True)
 
         super(List, self).save(*args, **kwargs)
