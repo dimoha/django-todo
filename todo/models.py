@@ -11,9 +11,9 @@ from django.utils.encoding import python_2_unicode_compatible
 
 @python_2_unicode_compatible
 class List(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, verbose_name=u'Название')
     slug = models.SlugField(max_length=60, editable=False)
-    group = models.ForeignKey(Group)
+    group = models.ForeignKey(Group, verbose_name=u'Группа')
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -39,16 +39,16 @@ class List(models.Model):
 
 @python_2_unicode_compatible
 class Item(models.Model):
-    title = models.CharField(max_length=140)
-    list = models.ForeignKey(List)
-    created_date = models.DateField(auto_now=True)
-    due_date = models.DateField(blank=True, null=True, )
-    completed = models.BooleanField(default=None)
-    completed_date = models.DateField(blank=True, null=True)
-    created_by = models.ForeignKey(User, related_name='todo_created_by')
-    assigned_to = models.ForeignKey(User, blank=True, null=True, related_name='todo_assigned_to')
-    note = models.TextField(blank=True, null=True)
-    priority = models.PositiveIntegerField()
+    title = models.CharField(max_length=140, verbose_name=u'Заголовок')
+    list = models.ForeignKey(List, verbose_name=u'Категория')
+    created_date = models.DateField(auto_now=True, verbose_name=u'Дата создания')
+    due_date = models.DateField(blank=True, null=True, verbose_name=u'Дедлайн')
+    completed = models.BooleanField(default=None, verbose_name=u'Выполнена')
+    completed_date = models.DateField(blank=True, null=True, verbose_name=u'Дата выполнения')
+    created_by = models.ForeignKey(User, related_name='todo_created_by', verbose_name=u'Автор')
+    assigned_to = models.ForeignKey(User, blank=True, null=True, related_name='todo_assigned_to', verbose_name=u'Исполнитель')
+    note = models.TextField(blank=True, null=True, verbose_name=u'Описание')
+    priority = models.PositiveIntegerField(verbose_name=u'Приоритет')
 
     # Has due date for an instance of this object passed?
     def overdue_status(self):
@@ -81,10 +81,10 @@ class Comment(models.Model):
     Not using Django's built-in comments because we want to be able to save
     a comment and change task details at the same time. Rolling our own since it's easy.
     """
-    author = models.ForeignKey(User)
-    task = models.ForeignKey(Item)
-    date = models.DateTimeField(default=datetime.datetime.now)
-    body = models.TextField(blank=True)
+    author = models.ForeignKey(User, verbose_name=u'Автор')
+    task = models.ForeignKey(Item, verbose_name=u'Задача')
+    date = models.DateTimeField(default=datetime.datetime.now, verbose_name=u'Дата')
+    body = models.TextField(blank=True, verbose_name=u'Текст')
 
     def snippet(self):
         # Define here rather than in __str__ so we can use it in the admin list_display
