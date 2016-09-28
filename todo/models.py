@@ -56,7 +56,7 @@ class Item(models.Model):
         if self.due_date and datetime.date.today() > self.due_date:
             return 1
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -90,7 +90,7 @@ class Comment(models.Model):
         # Define here rather than in __str__ so we can use it in the admin list_display
         return "{author} - {snippet}...".format(author=self.author, snippet=self.body[:35])
 
-    def __unicode__(self):
+    def __str__(self):
         return self.snippet
 
     class Meta:
