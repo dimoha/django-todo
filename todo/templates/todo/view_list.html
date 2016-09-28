@@ -118,7 +118,7 @@
             	</table>
 
                 <p><input type="submit" name="mark_tasks_done" value="Применить..."  class="todo-button"></p>
-                <p><a class="todo" href="{% if %}{% url 'todo-completed_tasks' global_list_id list_slug %}">Посмотреть выполненные задачи</a></p>
+                <p><a class="todo" href="{% url 'todo-completed_tasks' global_list_id list_slug %}">Посмотреть выполненные задачи</a></p>
 
             {% else %}
 
