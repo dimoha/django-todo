@@ -31,25 +31,18 @@
 
             <table>
                 <tr>
-                    <td>Описание:</td>
-                    <td>{{ form.title }} <br />
-                        Заголовок
-                     </td>
+                    <td>Заголовок:</td>
+                    <td>{{ form.title }}</td>
                 </tr>
 
                 <tr>
                     <td valign="top">Описание:</td>
-                    <td valign="top">{{ form.note }}<br />
-                        Опишите проблема
-                    </td>
+                    <td valign="top">{{ form.note }}</td>
                 </tr>
 
                 <tr>
                     <td>Приоритет:</td>
-                    <td>{{ form.priority }} <br />
-                        Укажите число от 1 до 5, <br />
-                        где 5 это максимальный приоритет.
-                     </td>
+                    <td>{{ form.priority }}</td>
                 </tr>
             </table>
             <p><input type="submit" class="todo-button" name="add_task" value="Отправить"></p>
