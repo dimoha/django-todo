@@ -18,7 +18,7 @@ class List(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             from todo.utils import translit
-            self.slug = slugify(translit(self.name), allow_unicode=True)
+            self.slug = slugify(translit(self.name))
 
         super(List, self).save(*args, **kwargs)
 
