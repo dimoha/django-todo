@@ -10,8 +10,7 @@
 	    // thedate won't be present and datepicker will fall back on the default (today).
 	    $(document).ready(function(){
 	        $('#id_due_date').datepicker({
-				language: "ru",
-				defaultDate: new Date({{thedate.year}}, {{thedate.month}} - 1, {{thedate.day}}),
+				language: "ru"
 		    });
 	    });
 	</script>
