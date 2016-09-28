@@ -20,7 +20,6 @@ from todo.models import Item, List, Comment
 from todo.utils import mark_done, undo_completed_task, del_tasks, send_notify_mail
 
 
-
 def check_user_allowed(user):
     """
     Conditions for user_passes_test decorator.
