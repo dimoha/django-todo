@@ -10,7 +10,7 @@ class AddListForm(ModelForm):
     # to derive that list.
     def __init__(self, user, *args, **kwargs):
         super(AddListForm, self).__init__(*args, **kwargs)
-        if user.user.is_staff():
+        if user.is_staff():
             self.fields['group'].queryset = Group.objects.all()
         else:
             self.fields['group'].queryset = Group.objects.filter(user=user)
