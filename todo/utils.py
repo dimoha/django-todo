@@ -3,7 +3,7 @@ import datetime
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
-from django.conf import settings
+from todo import settings
 from todo.models import Item
 
 
