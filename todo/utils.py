@@ -14,7 +14,7 @@ def mark_done(request, done_items):
         i.completed = True
         i.completed_date = datetime.datetime.now()
         i.save()
-        messages.success(request, u"Задача \"{i}\" помечена выполненной.".format(i=i.title))
+        messages.success(request, u"Задача \"{i}\" помечена выполненной.".format(i=i.smart_title))
 
 
 def undo_completed_task(request, undone_items):
@@ -23,14 +23,14 @@ def undo_completed_task(request, undone_items):
         i = Item.objects.get(id=item)
         i.completed = False
         i.save()
-        messages.success(request, u"Ранее выполненная задача \"{i}\" помечена невыполненной.".format(i=i.title))
+        messages.success(request, u"Ранее выполненная задача \"{i}\" помечена невыполненной.".format(i=i.smart_title))
 
 
 def del_tasks(request, deleted_items):
     # Delete selected items
     for item_id in deleted_items:
         i = Item.objects.get(id=item_id)
-        messages.success(request, u"Задача \"{i}\" удалена.".format(i=i.title))
+        messages.success(request, u"Задача \"{i}\" удалена.".format(i=i.smart_title))
         i.delete()
 
 

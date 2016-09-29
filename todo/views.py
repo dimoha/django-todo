@@ -141,7 +141,7 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
             if "notify" in request.POST and new_task.assigned_to != request.user:
                 send_notify_mail(request, new_task)
 
-            messages.success(request, u"Новая задача \"{t}\" добавлена.".format(t=new_task.title))
+            messages.success(request, u"Новая задача \"{t}\" добавлена.".format(t=new_task.smart_title))
             return HttpResponseRedirect(request.path)
     else:
         # Don't allow adding new tasks on some views
@@ -263,7 +263,7 @@ def external_add(request):
                 item.assigned_to = User.objects.get(username=settings.DEFAULT_ASSIGNEE)
             item.save()
 
-            email_subject = render_to_string("todo/email/assigned_subject.txt", {'task': item.title})
+            email_subject = render_to_string("todo/email/assigned_subject.txt", {'task': item.smart_title})
             email_body = render_to_string("todo/email/assigned_body.txt", {'task': item, 'site': settings.SITE_DOMAIN, })
             try:
                 send_mail(
