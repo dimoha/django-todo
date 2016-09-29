@@ -16,7 +16,7 @@ ul.messages li {
 }
 
 a.todo {
-	text-decoration: none;
+	text-decoration: underline;
 	color: #474747;
 }
 
