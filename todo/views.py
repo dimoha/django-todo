@@ -99,7 +99,7 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
 
     # Process all possible list interactions on each submit
     mark_done(request, request.POST.getlist('mark_done'))
-    del_tasks(request, request.POST.getlist('del_tasks'))
+    del_tasks(request, request.POST.getlist('del_task'))
     undo_completed_task(request, request.POST.getlist('undo_completed_task'))
 
     thedate = datetime.datetime.now()

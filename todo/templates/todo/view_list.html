@@ -111,8 +111,8 @@
             	                {{ task.due_date|date:"Y-m-d" }}
             	            {% if task.overdue_status %}</span>{% endif %}
             	            </td>
-            	            <td>{{ task.created_by }}</td>
-            	            <td>{% if task.assigned_to %}{{ task.assigned_to }}{% else %}Любой{% endif %}</td>
+            	            <td>{{ task.created_by.get_full_name }}</td>
+            	            <td>{% if task.assigned_to %}{{ task.assigned_to.get_full_name }}{% else %}Любой{% endif %}</td>
             	            <td style="text-align:center;">{% if task.note %}&asymp;{% endif %} </td>
             	            <td style="text-align:center;">{% if task.comment_set.all.count != 0 %}{{ task.comment_set.all.count }}{% endif %}</td>
             	            {% if list_slug == "mine" %}
