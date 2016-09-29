@@ -41,12 +41,12 @@
     {% endif %}
 
     {% if auth_ok %}
-        <form action="" method="POST">
+        <form action="{{ request.path }}" method="POST">
             {% csrf_token %}
 
             {# Only show task adder if viewing a proper list #}
             {% if list_slug != "mine" %}
-                <h2 style="margin-bottom:0px;" id="slideToggle" >&rarr; Кликните, чтобы добавить задачу &larr;</h2>
+                <h2 style="margin-bottom:0;" id="slideToggle" >&rarr; Кликните, чтобы добавить задачу &larr;</h2>
 
                 <div id="AddTask">
             	    <table class="nocolor" border="0" cellspacing="5" cellpadding="5">
