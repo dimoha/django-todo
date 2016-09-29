@@ -89,7 +89,7 @@
             {% for comment in comment_list %}
                 <p>
                     <strong>{{ comment.author.first_name }} {{ comment.author.last_name }},
-                        {{ comment.date|date:"F d Y P" }}
+                        {{ comment.date|date:"Y-m-d H:i" }}
                     </strong>
                 </p>
                 {{ comment.body|safe|urlize|linebreaks }}
