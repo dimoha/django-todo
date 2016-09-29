@@ -20,7 +20,7 @@
         <form action="" method="post" accept-charset="utf-8">
 		    {% csrf_token %}
             <input type="hidden" name="list" value="{{ list.id }}" id="some_name">
-            <p><input type="submit" name="delete-confirm" value="Удалить! &rarr;" class="todo-button"> </p>
+            <p><input type="submit" name="delete-confirm btn btn-danger" value="Удалить! &rarr;" class="todo-button"> </p>
         </form>
 
         <a href="{% url 'todo-incomplete_tasks' list.id list_slug %}">Назад к категории: {{ list.name }}</a>

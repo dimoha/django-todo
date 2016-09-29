@@ -72,7 +72,7 @@
                     <input type="hidden" name="created_by" value="{{ request.user.id }}" id="id_created_by">
                     <input type="hidden" name="list" value="{{ global_list_id }}" id="id_list">
                     <input type="hidden" name="created_date" value="{{ created_date }}" id="id_created_date">
-            	    <p><input type="submit" name="add_task" value="Добавить задачу" class="todo-button"></p>
+            	    <p><input type="submit" name="add_task" value="Добавить задачу" class="todo-button btn btn-primary"></p>
                 </div>
             {% endif %}
 
@@ -80,7 +80,7 @@
 
             	<h3>Незакрытые задачи :: Перемещайте строки чтобы задать приоритет</h3>
 
-            	<table border="0" id="tasktable">
+            	<table border="0" class="table" id="tasktable">
                     <tr>
                         <th>Готова</th>
                         <th>Задача</th>
@@ -117,14 +117,14 @@
             	    {% endfor %}
             	</table>
 
-                <p><input type="submit" name="mark_tasks_done" value="Применить..."  class="todo-button"></p>
+                <p><input type="submit" name="mark_tasks_done" value="Применить"  class="todo-button btn btn-primary"></p>
                 <p><a class="todo" href="{% url 'todo-completed_tasks' global_list_id list_slug %}">Посмотреть выполненные задачи</a></p>
 
             {% else %}
 
             	<h3>Выполненные задачи</h3>
 
-            	<table border="0"  id="tasktable">
+            	<table border="0" class="table" id="tasktable">
                     <tr>
                         <th>Открыть</th>
                         <th>Задача</th>
@@ -151,7 +151,7 @@
             	    {% endfor %}
 
             	</table>
-            	<p><input type="submit" name="deldonetasks" value="Применить"  class="todo-button"></p>
+            	<p><input type="submit" name="deldonetasks" value="Применить"  class="todo-button btn btn-primary"></p>
             	</form>
                 <p><a class="todo" href="{% url 'todo-incomplete_tasks' global_list_id list_slug %}">Посмотреть невыполненные задачи</a></p>
             {% endif %}
