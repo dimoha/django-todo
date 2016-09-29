@@ -57,8 +57,12 @@ class Item(models.Model):
         if self.due_date and datetime.date.today() > self.due_date:
             return 1
 
+    @property
+    def smart_title(self):
+        return self.title if self.title else "Task #{0}".format(self.pk)
+
     def __str__(self):
-        return self.title
+        return self.smart_title
 
     def get_absolute_url(self):
         return reverse('todo-task_detail', kwargs={'task_id': self.id, })

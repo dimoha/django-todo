@@ -11,7 +11,7 @@
         <h2>{{found_items.count}} результатов по условию: "{{ query_string }}"</h2>
         <div class="post_list">
             {% for f in found_items %}
-                <p><strong><a href="{% url 'todo-task_detail' f.id %}">{{ f.title }}</a></strong><br />
+                <p><strong><a href="{% url 'todo-task_detail' f.id %}">{{ f.smart_title }}</a></strong><br />
                     <span class="minor">
                         Категория: <a href="{% url 'todo-incomplete_tasks' f.list.id f.list.slug %}">{{ f.list.name }}</a><br />
                         Исполнитель: {% if f.assigned_to %}{{ f.assigned_to }}{% else %}Любой{% endif %} (автор: {{ f.created_by }})<br />

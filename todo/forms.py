@@ -37,7 +37,8 @@ class AddItemForm(ModelForm):
     )
 
     title = forms.CharField(
-        widget=forms.widgets.TextInput(attrs={'size': 35})
+        widget=forms.widgets.TextInput(attrs={'size': 35}),
+        required=False
     )
 
     note = forms.CharField(widget=forms.Textarea(), required=False)
