@@ -193,8 +193,9 @@ def view_task(request, task_id):
                     )
 
                     # Get list of all thread participants - task creator plus everyone who has commented on it.
-                    recip_list = []
-                    recip_list.append(task.created_by.email)
+                    recip_list = [task.created_by.email]
+                    if task.assigned_to is not None:
+                        recip_list.append(task.assigned_to.email)
                     commenters = Comment.objects.filter(task=task)
                     for c in commenters:
                         recip_list.append(c.author.email)
