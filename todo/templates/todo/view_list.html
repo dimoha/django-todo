@@ -41,12 +41,17 @@
     {% endif %}
 
     {% if auth_ok %}
+        <h2 style="margin-bottom:0;" id="slideToggle" >&rarr; Кликните, чтобы добавить задачу &larr;</h2>
+        <form action="{{ request.path }}" method="GET" style="margin: 10px;">
+            <input type="text" value="{{ request.GET.q }}" name="q" style="height: 37px;">
+            <input type="submit" value="Искать"  class="todo-button btn btn-primary">
+        </form>
         <form action="{{ request.path }}" method="POST">
             {% csrf_token %}
 
             {# Only show task adder if viewing a proper list #}
             {% if list_slug != "mine" %}
-                <h2 style="margin-bottom:0;" id="slideToggle" >&rarr; Кликните, чтобы добавить задачу &larr;</h2>
+
 
                 <div id="AddTask">
             	    <table class="nocolor" border="0" cellspacing="5" cellpadding="5">
@@ -81,6 +86,7 @@
             	    <p><input type="submit" name="add_task" value="Добавить задачу" class="todo-button btn btn-primary"></p>
                 </div>
             {% endif %}
+
 
             {% if not view_completed %}
 

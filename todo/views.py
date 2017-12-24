@@ -127,6 +127,22 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
         task_list = Item.objects.filter(list=list.id, completed=0)
         completed_list = Item.objects.filter(list=list.id, completed=1)
 
+    # Search
+    if request.GET:
+        query_string = ''
+        if ('q' in request.GET) and request.GET['q'].strip():
+            query_string = request.GET['q']
+            task_list = task_list.filter(
+                Q(title__icontains=query_string) |
+                Q(note__icontains=query_string)
+            )
+            if 'completed_list' in dir():
+                completed_list = completed_list.filter(
+                    Q(title__icontains=query_string) |
+                    Q(note__icontains=query_string)
+                )
+
+
     if request.POST.getlist('add_task'):
         form = AddItemForm(list, request.POST, initial={
             'assigned_to': request.user.id,
