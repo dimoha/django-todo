@@ -64,7 +64,7 @@ def del_list(request, list_id, list_slug):
     """
     Delete an entire list. Danger Will Robinson! Only staff members should be allowed to access this view.
     """
-    list = get_object_or_404(List, slug=list_slug)
+    list = get_object_or_404(List, pk=list_id)
     list_name = list.name
 
     if request.method == 'POST':
