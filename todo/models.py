@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.utils.encoding import python_2_unicode_compatible
 
 
-@python_2_unicode_compatible
+#@python_2_unicode_compatible
 class List(models.Model):
     name = models.CharField(max_length=60, verbose_name=u'Название')
     slug = models.SlugField(max_length=60, editable=False)
@@ -22,12 +22,15 @@ class List(models.Model):
 
         super(List, self).save(*args, **kwargs)
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.name
 
     def incomplete_tasks(self):
         # Count all incomplete tasks on the current list instance
         return Item.objects.filter(list=self, completed=0)
+
+    def __unicode__(self):
+        return self.name
 
     class Meta:
         ordering = ["name"]
@@ -38,7 +41,7 @@ class List(models.Model):
         unique_together = ("group", "slug")
 
 
-@python_2_unicode_compatible
+#@python_2_unicode_compatible
 class Item(models.Model):
     title = models.CharField(max_length=140, verbose_name=u'Заголовок')
     list = models.ForeignKey(List, verbose_name=u'Категория')
@@ -61,8 +64,8 @@ class Item(models.Model):
     def smart_title(self):
         return self.title if self.title else "Task #{0}".format(self.pk)
 
-    def __str__(self):
-        return self.smart_title
+    # def __str__(self):
+    #     return self.smart_title
 
     def get_absolute_url(self):
         return reverse('todo-task_detail', kwargs={'task_id': self.id, })
@@ -74,13 +77,16 @@ class Item(models.Model):
             self.completed_date = datetime.datetime.now()
         super(Item, self).save()
 
+    def __unicode__(self):
+        return self.title
+
     class Meta:
         ordering = ["priority"]
         verbose_name_plural = u"Задачи"
         verbose_name = u"Задача"
 
 
-@python_2_unicode_compatible
+#@python_2_unicode_compatible
 class Comment(models.Model):
     """
     Not using Django's built-in comments because we want to be able to save
@@ -95,8 +101,11 @@ class Comment(models.Model):
         # Define here rather than in __str__ so we can use it in the admin list_display
         return "{author} - {snippet}...".format(author=self.author, snippet=self.body[:35])
 
-    def __str__(self):
-        return self.snippet
+    # def __str__(self):
+    #     return self.snippet
+
+    def __unicode__(self):
+        return self.author.username
 
     class Meta:
         verbose_name_plural = u"Комментарии"
