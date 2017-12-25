@@ -7,7 +7,7 @@ from django.contrib.auth.models import User, Group
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.utils.encoding import python_2_unicode_compatible
-
+from django.utils import timezone
 
 #@python_2_unicode_compatible
 class List(models.Model):
@@ -67,6 +67,7 @@ class Item(models.Model):
     # def __str__(self):
     #     return self.smart_title
 
+
     def get_absolute_url(self):
         return reverse('todo-task_detail', kwargs={'task_id': self.id, })
 
@@ -110,3 +111,16 @@ class Comment(models.Model):
     class Meta:
         verbose_name_plural = u"Комментарии"
         verbose_name = u"Комментарий"
+
+class ItemDocument(models.Model):
+    item = models.ForeignKey(Item, verbose_name=u'Задача', related_name='docs_item')
+    name = models.CharField(max_length=1024, verbose_name=u'Название')
+    document = models.FileField(verbose_name=u'Файл', upload_to=u'docs/', blank=True, null=True)
+    create_dt = models.DateTimeField(null=False, blank=False, default=timezone.now, verbose_name=u'Дата создания')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = u"Документ"
+        verbose_name_plural = u"Документы"

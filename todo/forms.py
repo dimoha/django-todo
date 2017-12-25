@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User, Group
-from todo.models import Item, List
-
+from todo.models import Item, List, ItemDocument
+from django.db import transaction
 
 class AddListForm(ModelForm):
     # The picklist showing allowable groups to which a new list can be added
@@ -23,6 +24,9 @@ class AddListForm(ModelForm):
 class AddItemForm(ModelForm):
     # The picklist showing the users to which a new task can be assigned
     # must find other members of the groups the current list belongs to.
+
+    docs = forms.FileField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
     def __init__(self, task_list, *args, **kwargs):
         super(AddItemForm, self).__init__(*args, **kwargs)
         # print dir(self.fields['list'])
@@ -43,6 +47,19 @@ class AddItemForm(ModelForm):
 
     note = forms.CharField(widget=forms.Textarea(), required=False)
 
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            item = super(AddItemForm, self).save(*args, **kwargs)
+            if len(self.files) > 0:
+                docs = self.files.getlist('docs')
+                for doc in docs:
+                    ItemDocument.objects.create(
+                        item=item,
+                        name=doc.name,
+                        document=doc,
+                    )
+        return item
+
     class Meta:
         model = Item
         exclude = []
@@ -51,9 +68,23 @@ class AddItemForm(ModelForm):
 class EditItemForm(ModelForm):
     # The picklist showing the users to which a new task can be assigned
     # must find other members of the groups the current list belongs to.
+    docs = forms.FileField(label=u"Документы", required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
     def __init__(self, *args, **kwargs):
         super(EditItemForm, self).__init__(*args, **kwargs)
         self.fields['assigned_to'].queryset = User.objects.filter(groups__in=[self.instance.list.group])
+
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            item = super(EditItemForm, self).save(*args, **kwargs)
+            if len(self.files) > 0:
+                docs = self.files.getlist('docs')
+                for doc in docs:
+                    ItemDocument.objects.create(
+                        item=item,
+                        name=doc.name,
+                        document=doc,
+                    )
 
     class Meta:
         model = Item

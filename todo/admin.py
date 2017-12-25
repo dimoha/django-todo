@@ -1,5 +1,5 @@
 from django.contrib import admin
-from todo.models import Item, List, Comment
+from todo.models import Item, List, Comment, ItemDocument
 
 
 class ItemAdmin(admin.ModelAdmin):
@@ -16,3 +16,4 @@ class CommentAdmin(admin.ModelAdmin):
 admin.site.register(List)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Item, ItemAdmin)
+admin.site.register(ItemDocument)

@@ -20,7 +20,7 @@
 
         <h2>{{ task }}</h2>
 
-        <form action="" method="POST">
+        <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
             <p id="slideToggle" ><strong>&rarr; Кликните для редактирования &larr;</strong></p>
@@ -30,6 +30,14 @@
                 <strong>Исполнитель:</strong> {% if task.assigned_to %}{{ task.assigned_to.get_full_name }}{% else %}Anyone{% endif %}<br />
                 <strong>Автор:</strong> {{ task.created_by.first_name }} {{ task.created_by.last_name }}<br />
                 <strong>Дедлайн:</strong>  {% if task.due_date %}{{ task.due_date }}{% else %}-{% endif %}<br />
+
+                {% if docs %}
+                    <strong>Документы:</strong> <br />
+                    {% for doc in docs %}
+            <p><a title="Открыть файл" href="{{ doc.document.url }}">{{ doc }}</a> <span style="color:gray">{{ doc.create_dt }}</span> </p>
+                      {% endfor %}
+                {% endif %}
+
                 <strong>Закрыта:</strong> {{ form.completed }}<br />
             </p>
 
@@ -71,6 +79,10 @@
                         <td>{{ form.priority }}  </td>
                     </tr>
 
+                    <tr>
+                        <td>Файлы:</td>
+                        <td>{{ form.docs }}  </td>
+                    </tr>
                 </table>
                 <p><input type="submit" class="todo-button btn btn-primary" name="edit_task" value="Сохранить"></p>
             </div>

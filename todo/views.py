@@ -144,7 +144,7 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
 
 
     if request.POST.getlist('add_task'):
-        form = AddItemForm(list, request.POST, initial={
+        form = AddItemForm(list, request.POST, request.FILES, initial={
             'assigned_to': request.user.id,
             'priority': 999,
         })
@@ -156,7 +156,7 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
             if "notify" in request.POST and new_task.assigned_to != request.user:
                 send_notify_mail(request, new_task)
 
-            messages.success(request, u"Новая задача \"{t}\" добавлена.".format(t=new_task.smart_title))
+            messages.success(request, u"Новая задача \"{t}\" добавлена.".format(t=new_task.title))
             return HttpResponseRedirect(request.path)
     else:
         # Don't allow adding new tasks on some views
@@ -178,6 +178,7 @@ def view_task(request, task_id):
     """
     task = get_object_or_404(Item, pk=task_id)
     comment_list = Comment.objects.filter(task=task_id)
+    docs = task.docs_item.all()
 
     # Ensure user has permission to view item.
     # Get the group this task belongs to, and check whether current user is a member of that group.
@@ -187,7 +188,7 @@ def view_task(request, task_id):
         auth_ok = True
 
         if request.POST:
-            form = EditItemForm(request.POST, instance=task)
+            form = EditItemForm(request.POST, request.FILES, instance=task)
 
             if form.is_valid():
                 form.save()
