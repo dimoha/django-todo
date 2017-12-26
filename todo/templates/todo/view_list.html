@@ -42,7 +42,10 @@
 
     {% if auth_ok %}
         <h2 style="margin-bottom:0;" id="slideToggle" >&rarr; Кликните, чтобы добавить задачу &larr;</h2>
-
+        <form action="{{ request.path }}" method="GET" style="margin: 10px;">
+                <input type="text" value="{{ request.GET.q }}" name="q" style="height: 37px;">
+                <input type="submit" value="Искать"  class="todo-button btn btn-primary">
+            </form>
         <form action="{{ request.path }}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
@@ -86,11 +89,6 @@
             	    <p style="margin-top:15px;: "><input type="submit" name="add_task" value="Добавить задачу" class="todo-button btn btn-primary"></p>
                 </div>
             {% endif %}
-
-            <form action="{{ request.path }}" method="GET" style="margin: 10px;">
-                <input type="text" value="{{ request.GET.q }}" name="q" style="height: 37px;">
-                <input type="submit" value="Искать"  class="todo-button btn btn-primary">
-            </form>
 
             {% if not view_completed %}
 
