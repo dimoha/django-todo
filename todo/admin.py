@@ -6,7 +6,7 @@ class ItemAdmin(admin.ModelAdmin):
     list_display = ('title', 'list', 'priority', 'due_date')
     list_filter = ('list',)
     ordering = ('priority',)
-    search_fields = ('name',)
+    search_fields = ('title',)
 
 
 class CommentAdmin(admin.ModelAdmin):
