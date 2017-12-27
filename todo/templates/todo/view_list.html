@@ -153,7 +153,7 @@
                     </tr>
 
             		{% for task in completed_list %}
-            	        <tr>
+            	        <tr id="{{ task.id }}">
             	            <td><input type="checkbox" name="undo_completed_task" value="{{ task.id }}" id="id_undo_completed_task{{ task.id }}">   </td>
             	            <td><a href="{% url 'todo-task_detail' task.id %}">{{ task.smart_title|truncatewords:20 }}</a></td>
             	            <td>{{ task.created_date|date:"Y-m-d" }}</td>
