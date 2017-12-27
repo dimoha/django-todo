@@ -241,7 +241,7 @@ def view_task(request, task_id):
 
 
 @csrf_exempt
-@user_passes_test(check_user_allowed)
+#@user_passes_test(check_user_allowed)
 def reorder_tasks(request):
     """
     Handle task re-ordering (priorities) from JQuery drag/drop in view_list.html
