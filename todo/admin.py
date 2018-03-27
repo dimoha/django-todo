@@ -3,7 +3,7 @@ from todo.models import Item, List, Comment, ItemDocument
 
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('title', 'list', 'priority', 'due_date')
+    list_display = ('title', 'list', 'priority', 'created_date', 'due_date')
     list_filter = ('list',)
     ordering = ('priority',)
     search_fields = ('title',)
