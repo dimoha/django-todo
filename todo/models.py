@@ -45,7 +45,7 @@ class List(models.Model):
 class Item(models.Model):
     title = models.CharField(max_length=140, verbose_name=u'Заголовок')
     list = models.ForeignKey(List, verbose_name=u'Категория')
-    created_date = models.DateField(auto_now=True, verbose_name=u'Дата создания')
+    created_date = models.DateField(auto_now_add=True, verbose_name=u'Дата создания')
     due_date = models.DateField(blank=True, null=True, verbose_name=u'Дедлайн')
     completed = models.BooleanField(default=None, verbose_name=u'Выполнена')
     completed_date = models.DateField(blank=True, null=True, verbose_name=u'Дата выполнения')
