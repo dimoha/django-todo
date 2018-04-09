@@ -113,3 +113,20 @@ class SearchForm(forms.Form):
     q = forms.CharField(
         widget=forms.widgets.TextInput(attrs={'size': 35})
     )
+
+class ListSearchForm(forms.Form):
+    """Search."""
+
+    q = forms.CharField(label=u"Искать", required=False, widget=forms.widgets.TextInput(attrs={'size': 35}))
+
+
+    from_date = forms.DateField(
+        label=u"С",
+        required=False,
+        widget=forms.DateTimeInput(attrs={'class': 'due_date_picker'})
+    )
+    to_date = forms.DateField(
+        label=u"По",
+        required=False,
+        widget=forms.DateTimeInput(attrs={'class': 'due_date_picker'})
+    )

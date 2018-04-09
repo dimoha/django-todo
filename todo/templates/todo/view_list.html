@@ -43,9 +43,10 @@
     {% if auth_ok %}
         <h2 style="margin-bottom:0;" id="slideToggle" >&rarr; Кликните, чтобы добавить задачу &larr;</h2>
         <form action="{{ request.path }}" method="GET" style="margin: 10px;">
-                <input type="text" value="{{ request.GET.q }}" name="q" style="height: 37px;">
-                <input type="submit" value="Искать"  class="todo-button btn btn-primary">
+                {{ search_form }}
+                <br /><br /><input type="submit" value="Искать"  class="todo-button btn btn-primary">
             </form>
+
         <form action="{{ request.path }}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 

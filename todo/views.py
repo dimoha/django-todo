@@ -14,7 +14,7 @@ from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 
 from todo import settings
-from todo.forms import AddListForm, AddItemForm, EditItemForm, AddExternalItemForm, SearchForm
+from todo.forms import AddListForm, AddItemForm, EditItemForm, AddExternalItemForm, SearchForm, ListSearchForm
 from todo.models import Item, List, Comment
 from todo.utils import mark_done, undo_completed_task, del_tasks, send_notify_mail
 
@@ -85,6 +85,8 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
     Display and manage items in a list.
     """
 
+    search_form = ListSearchForm()
+
     # Make sure the accessing user has permission to view this list.
     # Always authorize the "mine" view. Admins can view/edit all lists.
     list = None
@@ -130,17 +132,30 @@ def view_list(request, list_id=0, list_slug=None, view_completed=False):
     # Search
     if request.GET:
         query_string = ''
-        if ('q' in request.GET) and request.GET['q'].strip():
-            query_string = request.GET['q']
+        if 'q' in request.GET:
+            query_string = request.GET['q'].strip()
             task_list = task_list.filter(
                 Q(title__icontains=query_string) |
                 Q(note__icontains=query_string)
             )
+            if 'from_date' in request.GET and len(request.GET['from_date']) > 0:
+                from_date = datetime.datetime.strptime(request.GET['from_date'], "%d.%m.%Y")
+                task_list = task_list.filter(created_date__gte=from_date)
+            if 'to_date' in request.GET and len(request.GET['to_date'])>0:
+                to_date = datetime.datetime.strptime(request.GET['to_date'], "%d.%m.%Y")
+                task_list = task_list.filter(created_date__lte=to_date)
+
             if 'completed_list' in dir():
                 completed_list = completed_list.filter(
                     Q(title__icontains=query_string) |
                     Q(note__icontains=query_string)
                 )
+                if 'from_date' in request.GET and len(request.GET['from_date']) > 0:
+                    from_date = datetime.datetime.strptime(request.GET['from_date'], "%d.%m.%Y")
+                    completed_list = completed_list.filter(created_date__gte=from_date)
+                if 'to_date' in request.GET and len(request.GET['to_date']) > 0:
+                    to_date = datetime.datetime.strptime(request.GET['to_date'], "%d.%m.%Y")
+                    completed_list = completed_list.filter(created_date__lte=to_date)
 
 
     if request.POST.getlist('add_task'):
