@@ -7,6 +7,8 @@
 /dist/
 /docs/build/
 /*.egg-info/
+todo/local_settings.py
+
 
 # Django and Python
 *.py[cod]
